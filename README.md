@@ -1,81 +1,64 @@
 # Creativity Oasis QR Pages
 
-This package is deployment-ready and intentionally small:
+This is now a simple static QR project. There are no tokens, APIs, functions, databases, or build steps.
 
-- `index.html` redirects the site root to the non-winning page.
+## Files
+
+- `index.html` redirects the site root to the non-winner page.
 - `not-winner.html` is the public non-winning QR page.
 - `winner.html` is the winning QR page.
-- `logo.png` is the original Creativity Oasis logo.
-- `config.js` controls where the winner page sends claim checks.
-- `netlify.toml` makes Netlify deploy the static files and `/api/claim` function.
-- `netlify/functions/claim.js` is the Netlify version of the secure claim API.
-- `secure-claim-worker.js` is the tiny production API that prevents abuse.
-- `local-test-server.js` lets you test the token flow before deployment.
+- `logo.png` is the Creativity Oasis logo.
+- `qr-links.csv` has the two URL shapes to use after deployment.
+- `netlify.toml` is optional, but helps Netlify publish the current folder as a static site.
 
-The requested font names are set in CSS: `Omnes Arabic` for Arabic and `Ara Hamah City` for English. If those licensed fonts are not installed or hosted by the browser environment, the pages fall back to system fonts.
+## Claim Flow
 
-## How The Tokens Work
-
-Each winning QR URL contains a long random token:
+The winner page always shows:
 
 ```text
-winner.html?token=RANDOM_SECRET_TOKEN
+Claim code: WC26
 ```
 
-The server hashes that token with SHA-256 and checks it against the approved list in `seed-winning-tokens.sql`. Only approved hashes can win. On first successful scan, the server stores a claim for that token hash. Refreshing from the same browser still works because a claim cookie is set, but scanning the same QR from a different browser/device returns `already_claimed`.
+Ask visitors to show the page and say/send the code. Track redemptions manually in WhatsApp or at the space. Once 10 people redeem `WC26`, stop accepting the code.
 
-This is why the winner page cannot be only static HTML in production. If the page alone decided who wins, anyone could copy the URL or edit the page script.
+This is intentionally simple. It does not prevent someone from sharing the winner link, but it avoids broken deployment and makes redemption staff-controlled.
 
-## Test Before Deployment
+## Deploy On Netlify
 
-No installs are required if Node.js is available.
-
-1. Open a terminal in this folder.
-2. Run:
-
-```bash
-node local-test-server.js
-```
-
-3. Open URLs from `local-test-links.csv`.
-4. Try the same winner link twice in the same browser: it should still show the win.
-5. Try the same winner link in a different browser or after clearing cookies: it should show already claimed.
-
-To reset local claims during testing, open:
+Use these settings:
 
 ```text
-http://127.0.0.1:8787/api/reset-local-claims
+Branch to deploy: main
+Base directory: leave empty
+Build command: leave empty
+Publish directory: .
+Functions directory: leave empty
+Environment variables: none
 ```
 
-or delete `local-claims.json`.
+If the files are inside a subfolder in your repo, set **Base directory** to that folder and keep **Publish directory** as `.`.
 
-For visual preview only, open:
+## Deploy On GitHub Pages
+
+1. Push the files to GitHub.
+2. Go to repository Settings.
+3. Go to Pages.
+4. Source: Deploy from a branch.
+5. Branch: `main`.
+6. Folder: `/ (root)`.
+
+## QR Links
+
+After deployment, replace `https://YOUR-SITE.example` in `qr-links.csv`.
+
+Use:
 
 ```text
-http://127.0.0.1:8787/winner.html?preview=1
+Non-winner QR:
+https://YOUR-SITE.example/not-winner.html
+
+Winner QR:
+https://YOUR-SITE.example/winner.html
 ```
 
-Do not use `preview=1` in real QR links.
-
-## Production Deployment
-
-For Netlify, follow `NETLIFY_DEPLOY.md`.
-
-For GitHub Pages, follow `GITHUB_PAGES.md`.
-
-The simplest secure production shape is:
-
-1. Upload `index.html`, `winner.html`, `not-winner.html`, `logo.png`, and `config.js` to the static site.
-2. Deploy `secure-claim-worker.js` with route `/api/claim`.
-3. Create a D1 database and bind it to the Worker as `DB`.
-4. Run `schema.sql`, then `seed-winning-tokens.sql` against that D1 database.
-5. If the API is not on the same domain, edit `config.js` so `CLAIM_ENDPOINT` is the full Worker URL.
-6. Replace `https://YOUR-DOMAIN.example` in `winning-qr-links.csv` with your final domain.
-7. Generate one public QR for `not-winner.html` and ten private winner QRs from the CSV.
-
-Keep these files private:
-
-- `winning-qr-links.csv`
-- `local-test-links.csv`
-
-The public static files can be visible. The secure part is the random token plus the server-side claim check.
+You only need two QR codes now: one winner and one non-winner.

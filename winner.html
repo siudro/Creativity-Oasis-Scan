@@ -94,10 +94,7 @@
       border-radius: 8px;
       background: var(--panel);
       box-shadow: 0 18px 48px rgba(50, 56, 88, 0.12);
-    }
-
-    body[data-state="error"] .result {
-      border-color: rgba(241, 104, 74, 0.46);
+      text-align: center;
     }
 
     .accent {
@@ -123,18 +120,6 @@
       margin: 0;
     }
 
-    .state {
-      display: none;
-      gap: 16px;
-      text-align: center;
-    }
-
-    body[data-state="checking"] [data-panel="checking"],
-    body[data-state="winner"] [data-panel="winner"],
-    body[data-state="error"] [data-panel="error"] {
-      display: grid;
-    }
-
     .status-icon {
       justify-self: center;
       width: 72px;
@@ -147,10 +132,6 @@
       background: rgba(252, 180, 81, 0.22);
     }
 
-    body[data-state="error"] .status-icon {
-      background: rgba(241, 104, 74, 0.12);
-    }
-
     .status-icon svg {
       width: 44px;
       height: 44px;
@@ -161,25 +142,10 @@
       fill: none;
     }
 
-    .spinner {
-      width: 58px;
-      height: 58px;
-      justify-self: center;
-      border: 5px solid rgba(50, 56, 88, 0.14);
-      border-top-color: var(--orange);
-      border-radius: 50%;
-      animation: spin 900ms linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(1turn); }
-    }
-
     h1 {
       color: var(--orange);
       font-size: clamp(2rem, 5vw, 3rem);
       line-height: 1.18;
-      text-align: center;
       letter-spacing: 0;
     }
 
@@ -187,7 +153,6 @@
       color: var(--navy);
       font-size: clamp(1.05rem, 2.7vw, 1.28rem);
       line-height: 1.85;
-      text-align: center;
     }
 
     .english {
@@ -197,34 +162,21 @@
       font-size: clamp(0.96rem, 2.3vw, 1.08rem);
       font-weight: 500;
       line-height: 1.7;
-      text-align: center;
     }
 
     .claim {
       width: fit-content;
       max-width: 100%;
       margin-inline: auto;
-      padding: 10px 16px;
+      padding: 12px 18px;
       border: 1px solid rgba(50, 56, 88, 0.18);
       border-radius: 8px;
       color: var(--navy);
       background: rgba(238, 235, 224, 0.78);
       font-family: var(--font-en);
-      font-size: 0.95rem;
-      line-height: 1.5;
-      text-align: center;
-      direction: ltr;
-    }
-
-    .preview {
-      justify-self: center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      color: #fff;
-      background: var(--navy);
-      font-family: var(--font-en);
-      font-size: 0.78rem;
-      line-height: 1;
+      font-size: 1.08rem;
+      font-weight: 800;
+      line-height: 1.4;
       direction: ltr;
     }
 
@@ -246,29 +198,18 @@
       z-index: 20;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .spinner {
-        animation: none;
-      }
-    }
-
     @media (max-width: 560px) {
       .page {
         width: min(100% - 24px, 900px);
-        gap: 20px;
       }
 
       .brand img {
         width: min(305px, 86vw);
       }
-
-      .result {
-        gap: 22px;
-      }
     }
   </style>
 </head>
-<body data-state="checking">
+<body>
   <canvas id="confetti" aria-hidden="true"></canvas>
   <main class="page" aria-labelledby="result-title">
     <header class="brand">
@@ -280,170 +221,23 @@
         <span></span><span></span><span></span><span></span>
       </div>
 
-      <div class="state" data-panel="checking">
-        <div class="spinner" aria-hidden="true"></div>
-        <h1 id="result-title">جاري التحقق من الرمز</h1>
-        <p class="lead">لحظة واحدة، نتحقق من أن رمز QR مؤهل ولم يتم استخدامه من قبل.</p>
-        <p class="english">One moment. We are checking that this QR code is eligible and has not been claimed before.</p>
+      <div class="status-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48">
+          <path d="M8 15a5 5 0 0 1 5-5h30v10a4 4 0 0 0 0 8v10H13a5 5 0 0 1-5-5V15Z"></path>
+          <path d="m18 25 5 5 11-12"></path>
+        </svg>
       </div>
 
-      <div class="state" data-panel="winner">
-        <div class="preview" id="preview-badge" hidden>Preview</div>
-        <div class="status-icon" aria-hidden="true">
-          <svg viewBox="0 0 48 48">
-            <path d="M8 15a5 5 0 0 1 5-5h30v10a4 4 0 0 0 0 8v10H13a5 5 0 0 1-5-5V15Z"></path>
-            <path d="m18 25 5 5 11-12"></path>
-          </svg>
-        </div>
-        <h1>مبروك! ربحت ورشة مجانية</h1>
-        <p class="lead">أظهر هذه الصفحة لفريق واحة الابتكار لتأكيد حجزك والاستمتاع بتجربتك.</p>
-        <p class="english">Congratulations! You won a free workshop. Show this page to the Creativity Oasis team to confirm your booking.</p>
-        <p class="claim" id="claim-code" hidden></p>
-      </div>
-
-      <div class="state" data-panel="error">
-        <div class="status-icon" aria-hidden="true">
-          <svg viewBox="0 0 48 48">
-            <path d="M10 12h28a4 4 0 0 1 4 4v8"></path>
-            <path d="M42 32v6H10a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4"></path>
-            <path d="m16 20 16 16"></path>
-            <path d="m32 20-16 16"></path>
-          </svg>
-        </div>
-        <h1 id="error-title">تعذر تأكيد الرمز</h1>
-        <p class="lead" id="error-ar">يرجى مسح رمز QR الأصلي مرة أخرى أو التواصل مع فريق واحة الابتكار.</p>
-        <p class="english" id="error-en">Please scan the original QR code again or check with the Creativity Oasis team.</p>
-      </div>
+      <h1 id="result-title">مبروك! ربحت ورشة مجانية</h1>
+      <p class="lead">أظهر هذه الصفحة لفريق واحة الابتكار واذكر رمز المطالبة لتأكيد جائزتك.</p>
+      <p class="english">Congratulations! Show this page to the Creativity Oasis team and share the claim code to redeem your workshop.</p>
+      <p class="claim">Claim code: WC26</p>
     </section>
 
     <footer>Creativity Oasis</footer>
   </main>
 
-  <script src="config.js"></script>
   <script>
-    const appConfig = window.CREATIVITY_OASIS_CONFIG || {};
-    const CLAIM_ENDPOINT = appConfig.CLAIM_ENDPOINT || "/api/claim";
-    const claimEndpointUrl = new URL(CLAIM_ENDPOINT, window.location.href);
-    const requestCredentials = claimEndpointUrl.origin === window.location.origin ? "same-origin" : "include";
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-    const previewMode = window.location.protocol === "file:" || params.has("preview");
-    const storedClaimKey = token ? "creativity_oasis_claim_" + token : "";
-    const state = document.body;
-    const claimCode = document.getElementById("claim-code");
-    const previewBadge = document.getElementById("preview-badge");
-    const errorAr = document.getElementById("error-ar");
-    const errorEn = document.getElementById("error-en");
-
-    const errorCopy = {
-      invalid: [
-        "هذا الرابط غير صالح أو لا يطابق رموز الفوز المعتمدة.",
-        "This link is not valid or does not match the approved winning QR codes."
-      ],
-      already_claimed: [
-        "تم استخدام هذا الرمز من قبل. كل رمز فائز صالح لمشاركة واحدة فقط.",
-        "This QR code has already been claimed. Each winning code can only be used once."
-      ],
-      all_claimed: [
-        "اكتملت جميع مقاعد الورش المجانية لهذه الحملة.",
-        "All free workshop spots for this campaign have already been claimed."
-      ],
-      network: [
-        "لم نتمكن من الاتصال بخدمة التحقق الآن. يرجى المحاولة مرة أخرى.",
-        "We could not reach the verification service right now. Please try again."
-      ],
-      missing: [
-        "هذا الرابط غير مكتمل. يرجى مسح رمز QR الأصلي الموجود على القطعة.",
-        "This link is incomplete. Please scan the original QR code on the item."
-      ]
-    };
-
-    function showError(kind) {
-      const copy = errorCopy[kind] || errorCopy.network;
-      errorAr.textContent = copy[0];
-      errorEn.textContent = copy[1];
-      state.dataset.state = "error";
-    }
-
-    function showWinner(data) {
-      if (data && data.claimCode) {
-        claimCode.hidden = false;
-        claimCode.textContent = "Claim code: " + data.claimCode;
-      }
-      state.dataset.state = "winner";
-      startConfetti();
-    }
-
-    function readStoredClaim() {
-      if (!storedClaimKey) {
-        return null;
-      }
-      try {
-        const stored = JSON.parse(window.localStorage.getItem(storedClaimKey));
-        if (stored && typeof stored.claimCode === "string") {
-          return stored;
-        }
-      } catch (error) {
-        return null;
-      }
-      return null;
-    }
-
-    function storeClaim(data) {
-      if (!storedClaimKey || !data || !data.claimCode) {
-        return;
-      }
-      try {
-        window.localStorage.setItem(storedClaimKey, JSON.stringify({
-          claimCode: data.claimCode,
-          claimedAt: new Date().toISOString()
-        }));
-      } catch (error) {
-        // Storage can be unavailable in private browsing; the server claim still works.
-      }
-    }
-
-    async function verifyClaim() {
-      if (previewMode) {
-        previewBadge.hidden = false;
-        showWinner({ claimCode: "PREVIEW" });
-        return;
-      }
-
-      if (!token) {
-        showError("missing");
-        return;
-      }
-
-      const storedClaim = readStoredClaim();
-      if (storedClaim) {
-        showWinner(storedClaim);
-        return;
-      }
-
-      try {
-        const response = await fetch(CLAIM_ENDPOINT, {
-          method: "POST",
-          credentials: requestCredentials,
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ token })
-        });
-        const data = await response.json().catch(() => ({}));
-
-        if (response.ok && data.status === "accepted") {
-          storeClaim(data);
-          showWinner(data);
-          return;
-        }
-
-        showError(data.status || "network");
-      } catch (error) {
-        showError("network");
-      }
-    }
-
     function startConfetti() {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         return;
@@ -507,7 +301,7 @@
       window.requestAnimationFrame(draw);
     }
 
-    verifyClaim();
+    startConfetti();
   </script>
 </body>
 </html>
