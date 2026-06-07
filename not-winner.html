@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>واحة الابتكار | Creativity Oasis</title>
+  <style>
+    :root {
+      --orange: #F1684A;
+      --light-orange: #FCB451;
+      --navy: #323858;
+      --green: #6FAD6C;
+      --warm-white: #EEEBE0;
+      --panel: #FAF9F4;
+      --font-ar: "Omnes Arabic", "DIN Next Arabic", "Noto Kufi Arabic", Tahoma, Arial, sans-serif;
+      --font-en: "Ara Hamah City", "Avenir Next", "Segoe UI", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--warm-white);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--navy);
+      font-family: var(--font-ar);
+      background: var(--warm-white);
+    }
+
+    body::before,
+    body::after {
+      position: fixed;
+      z-index: -1;
+      width: 28vw;
+      height: 28vw;
+      min-width: 160px;
+      min-height: 160px;
+      content: "";
+      opacity: 0.22;
+    }
+
+    body::before {
+      top: 0;
+      left: 0;
+      background: var(--green);
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+
+    body::after {
+      right: 0;
+      bottom: 0;
+      background: var(--light-orange);
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    }
+
+    .page {
+      width: min(860px, calc(100% - 32px));
+      min-height: 100vh;
+      margin: 0 auto;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 16px;
+      padding: clamp(16px, 3vh, 26px) 0 20px;
+    }
+
+    .brand {
+      display: grid;
+      place-items: center;
+      padding: 0 0 10px;
+    }
+
+    .brand img {
+      display: block;
+      width: min(330px, 82vw);
+      height: auto;
+      max-height: 162px;
+      object-fit: contain;
+    }
+
+    .result {
+      align-self: center;
+      display: grid;
+      gap: 22px;
+      padding: clamp(24px, 4vw, 36px);
+      border: 2px solid rgba(50, 56, 88, 0.16);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 18px 48px rgba(50, 56, 88, 0.12);
+    }
+
+    .accent {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      direction: ltr;
+    }
+
+    .accent span {
+      display: block;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .accent span:nth-child(1) { background: var(--navy); }
+    .accent span:nth-child(2) { background: var(--green); }
+    .accent span:nth-child(3) { background: var(--light-orange); }
+    .accent span:nth-child(4) { background: var(--orange); }
+
+    h1,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      color: var(--orange);
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.18;
+      text-align: center;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      color: var(--navy);
+      font-size: clamp(1.05rem, 2.7vw, 1.28rem);
+      line-height: 1.85;
+      text-align: center;
+    }
+
+    .english {
+      direction: ltr;
+      color: var(--navy);
+      font-family: var(--font-en);
+      font-size: clamp(0.96rem, 2.3vw, 1.08rem);
+      font-weight: 500;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    footer {
+      color: rgba(50, 56, 88, 0.76);
+      font-family: var(--font-en);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      text-align: center;
+      direction: ltr;
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 24px, 860px);
+        gap: 20px;
+      }
+
+      .brand img {
+        width: min(305px, 86vw);
+      }
+
+      .result {
+        gap: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-labelledby="result-title">
+    <header class="brand">
+      <img src="logo.png" alt="واحة الابتكار Creativity Oasis">
+    </header>
+
+    <section class="result" aria-live="polite">
+      <div class="accent" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <h1 id="result-title">حظ أوفر هذه المرة</h1>
+      <p class="lead">لم يكن هذا الرمز من الرموز الفائزة، لكن واحة الابتكار بانتظارك لتجارب وورش جديدة.</p>
+      <p class="english">Not a winner this time. Your QR did not unlock a free workshop, but Creativity Oasis still has more to explore.</p>
+    </section>
+
+    <footer>Creativity Oasis</footer>
+  </main>
+</body>
+</html>

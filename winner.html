@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>مبروك | Creativity Oasis</title>
+  <style>
+    :root {
+      --orange: #F1684A;
+      --light-orange: #FCB451;
+      --navy: #323858;
+      --green: #6FAD6C;
+      --warm-white: #EEEBE0;
+      --panel: #FAF9F4;
+      --font-ar: "Omnes Arabic", "DIN Next Arabic", "Noto Kufi Arabic", Tahoma, Arial, sans-serif;
+      --font-en: "Ara Hamah City", "Avenir Next", "Segoe UI", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--warm-white);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--navy);
+      font-family: var(--font-ar);
+      background: var(--warm-white);
+    }
+
+    body::before,
+    body::after {
+      position: fixed;
+      z-index: -1;
+      width: 28vw;
+      height: 28vw;
+      min-width: 160px;
+      min-height: 160px;
+      content: "";
+      opacity: 0.22;
+    }
+
+    body::before {
+      top: 0;
+      left: 0;
+      background: var(--green);
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+
+    body::after {
+      right: 0;
+      bottom: 0;
+      background: var(--light-orange);
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    }
+
+    .page {
+      width: min(900px, calc(100% - 32px));
+      min-height: 100vh;
+      margin: 0 auto;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 16px;
+      padding: clamp(16px, 3vh, 26px) 0 20px;
+    }
+
+    .brand {
+      display: grid;
+      place-items: center;
+      padding: 0 0 10px;
+    }
+
+    .brand img {
+      display: block;
+      width: min(330px, 82vw);
+      height: auto;
+      max-height: 162px;
+      object-fit: contain;
+    }
+
+    .result {
+      align-self: center;
+      display: grid;
+      gap: 22px;
+      padding: clamp(24px, 4vw, 36px);
+      border: 2px solid rgba(111, 173, 108, 0.56);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 18px 48px rgba(50, 56, 88, 0.12);
+    }
+
+    body[data-state="error"] .result {
+      border-color: rgba(241, 104, 74, 0.46);
+    }
+
+    .accent {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      direction: ltr;
+    }
+
+    .accent span {
+      display: block;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .accent span:nth-child(1) { background: var(--navy); }
+    .accent span:nth-child(2) { background: var(--green); }
+    .accent span:nth-child(3) { background: var(--light-orange); }
+    .accent span:nth-child(4) { background: var(--orange); }
+
+    h1,
+    p {
+      margin: 0;
+    }
+
+    .state {
+      display: none;
+      gap: 16px;
+      text-align: center;
+    }
+
+    body[data-state="checking"] [data-panel="checking"],
+    body[data-state="winner"] [data-panel="winner"],
+    body[data-state="error"] [data-panel="error"] {
+      display: grid;
+    }
+
+    .status-icon {
+      justify-self: center;
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      border: 2px solid rgba(50, 56, 88, 0.14);
+      border-radius: 8px;
+      color: var(--navy);
+      background: rgba(252, 180, 81, 0.22);
+    }
+
+    body[data-state="error"] .status-icon {
+      background: rgba(241, 104, 74, 0.12);
+    }
+
+    .status-icon svg {
+      width: 44px;
+      height: 44px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .spinner {
+      width: 58px;
+      height: 58px;
+      justify-self: center;
+      border: 5px solid rgba(50, 56, 88, 0.14);
+      border-top-color: var(--orange);
+      border-radius: 50%;
+      animation: spin 900ms linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(1turn); }
+    }
+
+    h1 {
+      color: var(--orange);
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.18;
+      text-align: center;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      color: var(--navy);
+      font-size: clamp(1.05rem, 2.7vw, 1.28rem);
+      line-height: 1.85;
+      text-align: center;
+    }
+
+    .english {
+      direction: ltr;
+      color: var(--navy);
+      font-family: var(--font-en);
+      font-size: clamp(0.96rem, 2.3vw, 1.08rem);
+      font-weight: 500;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .claim {
+      width: fit-content;
+      max-width: 100%;
+      margin-inline: auto;
+      padding: 10px 16px;
+      border: 1px solid rgba(50, 56, 88, 0.18);
+      border-radius: 8px;
+      color: var(--navy);
+      background: rgba(238, 235, 224, 0.78);
+      font-family: var(--font-en);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      text-align: center;
+      direction: ltr;
+    }
+
+    .preview {
+      justify-self: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--navy);
+      font-family: var(--font-en);
+      font-size: 0.78rem;
+      line-height: 1;
+      direction: ltr;
+    }
+
+    footer {
+      color: rgba(50, 56, 88, 0.76);
+      font-family: var(--font-en);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      text-align: center;
+      direction: ltr;
+    }
+
+    #confetti {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner {
+        animation: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 24px, 900px);
+        gap: 20px;
+      }
+
+      .brand img {
+        width: min(305px, 86vw);
+      }
+
+      .result {
+        gap: 22px;
+      }
+    }
+  </style>
+</head>
+<body data-state="checking">
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <main class="page" aria-labelledby="result-title">
+    <header class="brand">
+      <img src="logo.png" alt="واحة الابتكار Creativity Oasis">
+    </header>
+
+    <section class="result" aria-live="polite">
+      <div class="accent" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="state" data-panel="checking">
+        <div class="spinner" aria-hidden="true"></div>
+        <h1 id="result-title">جاري التحقق من الرمز</h1>
+        <p class="lead">لحظة واحدة، نتحقق من أن رمز QR مؤهل ولم يتم استخدامه من قبل.</p>
+        <p class="english">One moment. We are checking that this QR code is eligible and has not been claimed before.</p>
+      </div>
+
+      <div class="state" data-panel="winner">
+        <div class="preview" id="preview-badge" hidden>Preview</div>
+        <div class="status-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <path d="M8 15a5 5 0 0 1 5-5h30v10a4 4 0 0 0 0 8v10H13a5 5 0 0 1-5-5V15Z"></path>
+            <path d="m18 25 5 5 11-12"></path>
+          </svg>
+        </div>
+        <h1>مبروك! ربحت ورشة مجانية</h1>
+        <p class="lead">أظهر هذه الصفحة لفريق واحة الابتكار لتأكيد حجزك والاستمتاع بتجربتك.</p>
+        <p class="english">Congratulations! You won a free workshop. Show this page to the Creativity Oasis team to confirm your booking.</p>
+        <p class="claim" id="claim-code" hidden></p>
+      </div>
+
+      <div class="state" data-panel="error">
+        <div class="status-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <path d="M10 12h28a4 4 0 0 1 4 4v8"></path>
+            <path d="M42 32v6H10a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4"></path>
+            <path d="m16 20 16 16"></path>
+            <path d="m32 20-16 16"></path>
+          </svg>
+        </div>
+        <h1 id="error-title">تعذر تأكيد الرمز</h1>
+        <p class="lead" id="error-ar">يرجى مسح رمز QR الأصلي مرة أخرى أو التواصل مع فريق واحة الابتكار.</p>
+        <p class="english" id="error-en">Please scan the original QR code again or check with the Creativity Oasis team.</p>
+      </div>
+    </section>
+
+    <footer>Creativity Oasis</footer>
+  </main>
+
+  <script src="config.js"></script>
+  <script>
+    const appConfig = window.CREATIVITY_OASIS_CONFIG || {};
+    const CLAIM_ENDPOINT = appConfig.CLAIM_ENDPOINT || "/api/claim";
+    const claimEndpointUrl = new URL(CLAIM_ENDPOINT, window.location.href);
+    const requestCredentials = claimEndpointUrl.origin === window.location.origin ? "same-origin" : "include";
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const previewMode = window.location.protocol === "file:" || params.has("preview");
+    const storedClaimKey = token ? "creativity_oasis_claim_" + token : "";
+    const state = document.body;
+    const claimCode = document.getElementById("claim-code");
+    const previewBadge = document.getElementById("preview-badge");
+    const errorAr = document.getElementById("error-ar");
+    const errorEn = document.getElementById("error-en");
+
+    const errorCopy = {
+      invalid: [
+        "هذا الرابط غير صالح أو لا يطابق رموز الفوز المعتمدة.",
+        "This link is not valid or does not match the approved winning QR codes."
+      ],
+      already_claimed: [
+        "تم استخدام هذا الرمز من قبل. كل رمز فائز صالح لمشاركة واحدة فقط.",
+        "This QR code has already been claimed. Each winning code can only be used once."
+      ],
+      all_claimed: [
+        "اكتملت جميع مقاعد الورش المجانية لهذه الحملة.",
+        "All free workshop spots for this campaign have already been claimed."
+      ],
+      network: [
+        "لم نتمكن من الاتصال بخدمة التحقق الآن. يرجى المحاولة مرة أخرى.",
+        "We could not reach the verification service right now. Please try again."
+      ],
+      missing: [
+        "هذا الرابط غير مكتمل. يرجى مسح رمز QR الأصلي الموجود على القطعة.",
+        "This link is incomplete. Please scan the original QR code on the item."
+      ]
+    };
+
+    function showError(kind) {
+      const copy = errorCopy[kind] || errorCopy.network;
+      errorAr.textContent = copy[0];
+      errorEn.textContent = copy[1];
+      state.dataset.state = "error";
+    }
+
+    function showWinner(data) {
+      if (data && data.claimCode) {
+        claimCode.hidden = false;
+        claimCode.textContent = "Claim code: " + data.claimCode;
+      }
+      state.dataset.state = "winner";
+      startConfetti();
+    }
+
+    function readStoredClaim() {
+      if (!storedClaimKey) {
+        return null;
+      }
+      try {
+        const stored = JSON.parse(window.localStorage.getItem(storedClaimKey));
+        if (stored && typeof stored.claimCode === "string") {
+          return stored;
+        }
+      } catch (error) {
+        return null;
+      }
+      return null;
+    }
+
+    function storeClaim(data) {
+      if (!storedClaimKey || !data || !data.claimCode) {
+        return;
+      }
+      try {
+        window.localStorage.setItem(storedClaimKey, JSON.stringify({
+          claimCode: data.claimCode,
+          claimedAt: new Date().toISOString()
+        }));
+      } catch (error) {
+        // Storage can be unavailable in private browsing; the server claim still works.
+      }
+    }
+
+    async function verifyClaim() {
+      if (previewMode) {
+        previewBadge.hidden = false;
+        showWinner({ claimCode: "PREVIEW" });
+        return;
+      }
+
+      if (!token) {
+        showError("missing");
+        return;
+      }
+
+      const storedClaim = readStoredClaim();
+      if (storedClaim) {
+        showWinner(storedClaim);
+        return;
+      }
+
+      try {
+        const response = await fetch(CLAIM_ENDPOINT, {
+          method: "POST",
+          credentials: requestCredentials,
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ token })
+        });
+        const data = await response.json().catch(() => ({}));
+
+        if (response.ok && data.status === "accepted") {
+          storeClaim(data);
+          showWinner(data);
+          return;
+        }
+
+        showError(data.status || "network");
+      } catch (error) {
+        showError("network");
+      }
+    }
+
+    function startConfetti() {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
+
+      const canvas = document.getElementById("confetti");
+      const context = canvas.getContext("2d");
+      const colors = ["#F1684A", "#FCB451", "#323858", "#6FAD6C", "#EEEBE0"];
+      const pieces = [];
+      const count = 120;
+      let frame = 0;
+
+      function resize() {
+        canvas.width = Math.floor(window.innerWidth * window.devicePixelRatio);
+        canvas.height = Math.floor(window.innerHeight * window.devicePixelRatio);
+        context.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+      }
+
+      resize();
+      window.addEventListener("resize", resize, { passive: true });
+
+      for (let index = 0; index < count; index += 1) {
+        pieces.push({
+          x: Math.random() * window.innerWidth,
+          y: -24 - Math.random() * window.innerHeight * 0.35,
+          size: 7 + Math.random() * 9,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speed: 2.3 + Math.random() * 3.9,
+          tilt: Math.random() * Math.PI,
+          spin: -0.08 + Math.random() * 0.16,
+          drift: -1.1 + Math.random() * 2.2
+        });
+      }
+
+      function draw() {
+        context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        for (const piece of pieces) {
+          piece.y += piece.speed;
+          piece.x += piece.drift;
+          piece.tilt += piece.spin;
+          context.save();
+          context.translate(piece.x, piece.y);
+          context.rotate(piece.tilt);
+          context.fillStyle = piece.color;
+          context.fillRect(-piece.size / 2, -piece.size / 3, piece.size, piece.size / 1.7);
+          context.restore();
+          if (piece.y > window.innerHeight + 28) {
+            piece.y = -28;
+            piece.x = Math.random() * window.innerWidth;
+          }
+        }
+        frame += 1;
+        if (frame < 260) {
+          window.requestAnimationFrame(draw);
+        } else {
+          context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          window.removeEventListener("resize", resize);
+        }
+      }
+
+      window.requestAnimationFrame(draw);
+    }
+
+    verifyClaim();
+  </script>
+</body>
+</html>

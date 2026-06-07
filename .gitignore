@@ -1,0 +1,13 @@
+# Local test state
+local-claims.json
+
+# Private QR/token link files. Keep these out of public GitHub repos.
+winning-qr-links.csv
+local-test-links.csv
+
+# Tooling noise
+node_modules/
+.wrangler/
+.dev.vars
+.DS_Store
+Thumbs.db
