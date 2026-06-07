@@ -23,7 +23,7 @@
 
     html {
       min-height: 100%;
-      background: var(--warm-white);
+      background: var(--navy);
     }
 
     body {
@@ -32,7 +32,7 @@
       overflow-x: hidden;
       color: var(--navy);
       font-family: var(--font-ar);
-      background: var(--warm-white);
+      background: var(--navy);
     }
 
     body::before,
@@ -90,10 +90,10 @@
       display: grid;
       gap: 22px;
       padding: clamp(24px, 4vw, 36px);
-      border: 2px solid rgba(111, 173, 108, 0.56);
+      border: 0;
       border-radius: 8px;
       background: var(--panel);
-      box-shadow: 0 18px 48px rgba(50, 56, 88, 0.12);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
       text-align: center;
     }
 
@@ -180,8 +180,39 @@
       direction: ltr;
     }
 
+    .visit-link {
+      width: fit-content;
+      max-width: 100%;
+      margin-inline: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 18px;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--green);
+      font-family: var(--font-ar);
+      font-size: 1.02rem;
+      font-weight: 800;
+      line-height: 1.45;
+      text-decoration: none;
+      box-shadow: 0 10px 24px rgba(111, 173, 108, 0.28);
+    }
+
+    .visit-link svg {
+      width: 21px;
+      height: 21px;
+      flex: 0 0 auto;
+      stroke: currentColor;
+      stroke-width: 2.3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
     footer {
-      color: rgba(50, 56, 88, 0.76);
+      color: rgba(238, 235, 224, 0.82);
       font-family: var(--font-en);
       font-size: 0.9rem;
       line-height: 1.6;
@@ -205,6 +236,10 @@
 
       .brand img {
         width: min(305px, 86vw);
+      }
+
+      .visit-link {
+        width: 100%;
       }
     }
   </style>
@@ -232,6 +267,13 @@
       <p class="lead">أظهر هذه الصفحة لفريق واحة الابتكار واذكر رمز المطالبة لتأكيد جائزتك.</p>
       <p class="english">Congratulations! Show this page to the Creativity Oasis team and share the claim code to redeem your workshop.</p>
       <p class="claim">Claim code: WC26</p>
+      <a class="visit-link" href="https://maps.app.goo.gl/7q2Foe7Vmx1KBZsr7" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 0 1 16 0Z"></path>
+          <path d="M12 10.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+        </svg>
+        <span>زرنا لاستلام ورشتك | Visit us to claim your workshop</span>
+      </a>
     </section>
 
     <footer>Creativity Oasis</footer>
@@ -248,7 +290,6 @@
       const colors = ["#F1684A", "#FCB451", "#323858", "#6FAD6C", "#EEEBE0"];
       const pieces = [];
       const count = 120;
-      let frame = 0;
 
       function resize() {
         canvas.width = Math.floor(window.innerWidth * window.devicePixelRatio);
@@ -289,13 +330,7 @@
             piece.x = Math.random() * window.innerWidth;
           }
         }
-        frame += 1;
-        if (frame < 260) {
-          window.requestAnimationFrame(draw);
-        } else {
-          context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-          window.removeEventListener("resize", resize);
-        }
+        window.requestAnimationFrame(draw);
       }
 
       window.requestAnimationFrame(draw);
