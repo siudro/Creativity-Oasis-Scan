@@ -7,6 +7,8 @@ This package is deployment-ready and intentionally small:
 - `winner.html` is the winning QR page.
 - `logo.png` is the original Creativity Oasis logo.
 - `config.js` controls where the winner page sends claim checks.
+- `netlify.toml` makes Netlify deploy the static files and `/api/claim` function.
+- `netlify/functions/claim.js` is the Netlify version of the secure claim API.
 - `secure-claim-worker.js` is the tiny production API that prevents abuse.
 - `local-test-server.js` lets you test the token flow before deployment.
 
@@ -56,6 +58,8 @@ http://127.0.0.1:8787/winner.html?preview=1
 Do not use `preview=1` in real QR links.
 
 ## Production Deployment
+
+For Netlify, follow `NETLIFY_DEPLOY.md`.
 
 For GitHub Pages, follow `GITHUB_PAGES.md`.
 

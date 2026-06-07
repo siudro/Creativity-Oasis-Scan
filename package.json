@@ -2,6 +2,9 @@
   "name": "creativity-oasis-qr-pages",
   "version": "1.0.0",
   "private": true,
+  "dependencies": {
+    "@netlify/blobs": "latest"
+  },
   "scripts": {
     "start": "node local-test-server.js",
     "test:local": "node local-test-server.js"
